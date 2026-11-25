@@ -77,5 +77,5 @@ export const experience = [
 export const education = {
   school: 'Azerbaijan State University of Oil and Industry',
   degree: 'Computer Science',
-  period: '2024 — 2029',
+  period: '2024 — 2028',
 }

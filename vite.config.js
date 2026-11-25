@@ -5,4 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: './',
+  build: {
+    target: 'es2020',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        // vendor libs in their own long-cached chunks
+        manualChunks: { react: ['react', 'react-dom'], motion: ['framer-motion'] },
+      },
+    },
+  },
 })

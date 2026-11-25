@@ -43,11 +43,24 @@ function Loader({ onDone }) {
 function CursorGlow() {
   const ref = useRef(null)
   useEffect(() => {
-    const move = (e) => {
-      if (ref.current) ref.current.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`
+    if (window.matchMedia('(hover: none)').matches) return
+    let x = 0, y = 0, cx = 0, cy = 0, raf = 0
+    const tick = () => {
+      cx += (x - cx) * 0.18
+      cy += (y - cy) * 0.18
+      if (ref.current) ref.current.style.transform = `translate3d(${cx - 300}px, ${cy - 300}px, 0)`
+      raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.5 ? requestAnimationFrame(tick) : 0
     }
-    window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
+    const move = (e) => {
+      x = e.clientX
+      y = e.clientY
+      if (!raf) raf = requestAnimationFrame(tick)
+    }
+    window.addEventListener('mousemove', move, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', move)
+      cancelAnimationFrame(raf)
+    }
   }, [])
   return <div ref={ref} className="cursor-glow" aria-hidden />
 }
@@ -73,7 +86,7 @@ function Nav() {
       if (window.scrollY < 200) setActive('')
     }
     on()
-    window.addEventListener('scroll', on)
+    window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
   }, [])
   return (
