@@ -44,6 +44,7 @@ export const skills = [
 
 export const languages = [
   { name: 'English', level: 'Native / Bilingual', pct: 100 },
+  { name: 'Russian', level: 'Native / Bilingual', pct: 100 },
   { name: 'Azerbaijani', level: 'Limited Working', pct: 55 },
 ]
 
