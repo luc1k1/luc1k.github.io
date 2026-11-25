@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import Background from './components/Background.jsx'
+import ProjectArt from './components/ProjectArt.jsx'
 import { Counter, Magnetic, Reveal, SectionTitle, TiltCard, Typewriter } from './components/ui.jsx'
 import { education, experience, languages, profile, skills, stats } from './data.js'
 import { projects } from './projects.js'
@@ -319,7 +320,7 @@ function Projects() {
                   <img src={p.image} alt={p.title} loading="lazy" />
                 ) : (
                   <div className="project-art">
-                    <span>{p.icon || (p.placeholder ? '{ }' : p.title[0])}</span>
+                    {p.art ? <ProjectArt name={p.art} /> : <span>{p.icon || (p.placeholder ? '{ }' : p.title[0])}</span>}
                   </div>
                 )}
                 {(p.badge || p.placeholder) && <span className={`soon ${p.badge ? 'badge-hl' : ''}`}>{p.badge || 'Coming soon'}</span>}
