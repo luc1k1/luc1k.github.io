@@ -319,14 +319,20 @@ function Projects() {
                   <img src={p.image} alt={p.title} loading="lazy" />
                 ) : (
                   <div className="project-art">
-                    <span>{p.placeholder ? '{ }' : p.title[0]}</span>
+                    <span>{p.icon || (p.placeholder ? '{ }' : p.title[0])}</span>
                   </div>
                 )}
-                {p.placeholder && <span className="soon">Coming soon</span>}
+                {(p.badge || p.placeholder) && <span className={`soon ${p.badge ? 'badge-hl' : ''}`}>{p.badge || 'Coming soon'}</span>}
               </div>
               <div className="project-body">
                 <h3>{p.title}</h3>
                 <p>{p.description}</p>
+                {p.paper && (
+                  <div className="paper">
+                    <span>📄 Research paper</span>
+                    <i>{p.paper}</i>
+                  </div>
+                )}
                 {p.tags?.length > 0 && (
                   <div className="chips">
                     {p.tags.map((t) => (

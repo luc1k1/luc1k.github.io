@@ -307,3 +307,12 @@ footer { text-align: center; padding: 30px 20px 40px; color: var(--muted); font-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Research badge + paper block */
+.soon.badge-hl { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 0 18px rgba(217, 70, 239, 0.5); }
+.paper {
+  display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 12px;
+  background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border); border-left: 3px solid var(--pink);
+}
+.paper span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink); font-family: 'JetBrains Mono', monospace; }
+.paper i { font-size: 13.5px; color: var(--text); line-height: 1.45; }
