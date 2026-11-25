@@ -37,15 +37,15 @@ export const projects = [
   },
   {
     title: 'Eduva',
-    badge: 'Startup',
+    badge: 'Android app',
     art: 'eduva',
     description:
-      'AI-powered reading app for students: select any passage at any moment and the AI explains it in plain words, gives a real example and rates how difficult the concept is. I founded it and ran it as CEO — product vision, pricing and unit economics — and worked hands-on with the CTO on the AI and backend.',
+      'AI-powered Android reading app for students: select any passage at any moment and the AI explains it in plain words, gives a real example and rates how difficult the concept is. I founded it and ran it as CEO — product vision, pricing and unit economics — and worked hands-on with the CTO on the AI and backend.',
     metrics: [
       { value: 'Founder', label: '& CEO' },
       { value: '8 mo', label: 'Nov 2025 — Jun 2026' },
     ],
-    tags: ['EdTech', 'LLM', 'Product', 'Pricing', 'Backend', 'Payments'],
+    tags: ['Android', 'EdTech', 'LLM', 'Product', 'Pricing', 'Backend', 'Payments'],
   },
   { title: 'Coming soon', description: 'A new project will appear here.', tags: [], placeholder: true },
 ]

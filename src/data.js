@@ -49,7 +49,7 @@ export const experience = [
     period: 'Nov 2025 — Jun 2026',
     place: 'Baku, Azerbaijan',
     points: [
-      'Founded Eduva, an AI reading app where students can select any text and instantly get a plain-language explanation, a real-world example and a difficulty rating.',
+      'Founded Eduva, an AI-powered Android reading app where students can select any text and instantly get a plain-language explanation, a real-world example and a difficulty rating.',
       'Led the company as CEO: product vision, business strategy, pricing and full financial model / unit economics.',
       'Worked closely with the CTO on AI features and backend services, including payments and user authentication, and designed the app interface.',
     ],
