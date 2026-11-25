@@ -3,7 +3,7 @@
 export const profile = {
   name: 'Rasul Eyvazli',
   role: 'Machine Learning Engineer',
-  roles: ['Machine Learning Engineer', 'Backend Developer', 'Founder of Eduva'],
+  roles: ['Machine Learning Engineer', 'Computer Vision', 'Backend'],
   location: 'Baku, Azerbaijan',
   email: 'leroyceo@yahoo.com',
   linkedin: 'https://www.linkedin.com/in/rasuleyvazli',

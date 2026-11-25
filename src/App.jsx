@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import Background from './components/Background.jsx'
 import ProjectArt from './components/ProjectArt.jsx'
-import { Counter, Magnetic, Reveal, SectionTitle, TiltCard, Typewriter } from './components/ui.jsx'
+import { Counter, Magnetic, Reveal, SectionTitle, TiltCard } from './components/ui.jsx'
 import { education, experience, languages, profile, skills, stats } from './data.js'
 import { projects } from './projects.js'
 
@@ -13,32 +13,6 @@ const NAV = [
   { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ]
-
-function Loader({ onDone }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 1100)
-    return () => clearTimeout(t)
-  }, [onDone])
-  return (
-    <motion.div
-      className="loader"
-      exit={{ clipPath: 'inset(0 0 100% 0)' }}
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-    >
-      <motion.div
-        className="loader-logo"
-        initial={{ scale: 0.6, opacity: 0, rotate: -20 }}
-        animate={{ scale: 1, opacity: 1, rotate: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      >
-        RE
-      </motion.div>
-      <div className="loader-bar">
-        <motion.span initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 0.9, ease: 'easeInOut' }} />
-      </div>
-    </motion.div>
-  )
-}
 
 function CursorGlow() {
   const ref = useRef(null)
@@ -94,7 +68,7 @@ function Nav() {
       className={`nav ${scrolled ? 'scrolled' : ''}`}
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       <a href="#top" className="logo">
         <span>RE</span>
@@ -108,6 +82,9 @@ function Nav() {
           </a>
         ))}
       </nav>
+      <a href={profile.cv} download className="nav-cv">
+        CV <span>↓</span>
+      </a>
       <button className={`burger ${open ? 'open' : ''}`} onClick={() => setOpen(!open)} aria-label="Menu">
         <span />
         <span />
@@ -129,7 +106,7 @@ function Hero() {
           className="badge"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
+          transition={{ duration: 0.4 }}
         >
           <span className="dot" /> Open to work
         </motion.div>
@@ -140,7 +117,7 @@ function Hero() {
               <motion.span
                 initial={{ y: '110%' }}
                 animate={{ y: 0 }}
-                transition={{ delay: 1.45 + wi * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 0.05 + wi * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className={wi === 1 ? 'grad' : ''}
               >
                 {word}
@@ -153,16 +130,21 @@ function Hero() {
           className="hero-role"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.9, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
         >
-          <span className="mono">&gt;</span> <Typewriter words={profile.roles} />
+          {profile.roles.map((r, i) => (
+            <span key={r} className="role-item">
+              {i > 0 && <i> · </i>}
+              {r}
+            </span>
+          ))}
         </motion.p>
 
         <motion.p
           className="hero-sub"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.05, duration: 0.7 }}
+          transition={{ delay: 0.25, duration: 0.4 }}
         >
           I build machine learning and computer vision systems, reliable backends and products people actually use.
         </motion.p>
@@ -171,7 +153,7 @@ function Hero() {
           className="hero-cta"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.2, duration: 0.7 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
         >
           <Magnetic href="#projects" className="btn primary">
             View projects <span>→</span>
@@ -187,7 +169,7 @@ function Hero() {
         className="scroll-hint"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.6 }}
+        transition={{ delay: 0.6 }}
         aria-label="Scroll down"
       >
         <span />
@@ -456,13 +438,11 @@ function Contact() {
 }
 
 export default function App() {
-  const [loading, setLoading] = useState(true)
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 25 })
 
   return (
     <>
-      <AnimatePresence>{loading && <Loader onDone={() => setLoading(false)} />}</AnimatePresence>
       <Background />
       <CursorGlow />
       <motion.div className="progress" style={{ scaleX: progress }} />

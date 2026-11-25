@@ -46,35 +46,6 @@ export function SectionTitle({ kicker, title }) {
   )
 }
 
-// Typewriter cycling through phrases
-export function Typewriter({ words }) {
-  const [i, setI] = useState(0)
-  const [text, setText] = useState('')
-  const [del, setDel] = useState(false)
-
-  useEffect(() => {
-    const word = words[i % words.length]
-    let t
-    if (!del && text === word) t = setTimeout(() => setDel(true), 1800)
-    else if (del && text === '') {
-      setDel(false)
-      setI((v) => v + 1)
-    } else
-      t = setTimeout(
-        () => setText(del ? word.slice(0, text.length - 1) : word.slice(0, text.length + 1)),
-        del ? 40 : 85
-      )
-    return () => clearTimeout(t)
-  }, [text, del, i, words])
-
-  return (
-    <span className="typewriter">
-      {text}
-      <span className="caret" />
-    </span>
-  )
-}
-
 // Number counter
 export function Counter({ to, suffix = '' }) {
   const ref = useRef(null)

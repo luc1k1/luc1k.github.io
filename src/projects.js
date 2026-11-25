@@ -23,7 +23,7 @@ export const projects = [
     badge: 'Research',
     art: 'camera',
     description:
-      'Real-time exam-integrity surveillance across hundreds of camera streams, scaled on an 18-node university HPC cluster (CUDA, MPI, TensorRT). I single-handedly designed and built the core cheating-detection algorithm: pose-based head tracking with per-student calibration, writing-pose suppression and temporal scoring — cutting false alerts 3–4×.',
+      'AI that spots cheating in exam halls across hundreds of live camera streams. I single-handedly built the cheating-detection algorithm — pose-based head tracking with 3–4× fewer false alerts.',
     paper:
       'High-Performance Computing for Scalable Real-Time Object Detection in Distributed Video Surveillance Networks',
     authors: 'E. Ismayilov, R. Eyvazli, K. Shahmuradov · 2026',
@@ -40,7 +40,7 @@ export const projects = [
     badge: 'Android app',
     art: 'eduva',
     description:
-      'AI-powered Android reading app for students: select any passage at any moment and the AI explains it in plain words, gives a real example and rates how difficult the concept is. I founded it and ran it as CEO — product vision, pricing and unit economics — and worked hands-on with the CTO on the AI and backend.',
+      'Android reading app: highlight any text and the AI explains it, gives an example and rates its difficulty. Founder & CEO — product, pricing and unit economics.',
     metrics: [
       { value: 'Founder', label: '& CEO' },
       { value: '8 mo', label: 'Nov 2025 — Jun 2026' },
