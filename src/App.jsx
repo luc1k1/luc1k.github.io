@@ -16,7 +16,7 @@ const NAV = [
 
 function Loader({ onDone }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 1700)
+    const t = setTimeout(onDone, 1100)
     return () => clearTimeout(t)
   }, [onDone])
   return (
@@ -34,7 +34,7 @@ function Loader({ onDone }) {
         RE
       </motion.div>
       <div className="loader-bar">
-        <motion.span initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 1.4, ease: 'easeInOut' }} />
+        <motion.span initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 0.9, ease: 'easeInOut' }} />
       </div>
     </motion.div>
   )
@@ -55,8 +55,23 @@ function CursorGlow() {
 function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [active, setActive] = useState('')
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 30)
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' }
+    )
+    NAV.forEach((n) => {
+      const el = document.getElementById(n.id)
+      if (el) io.observe(el)
+    })
+    return () => io.disconnect()
+  }, [])
+  useEffect(() => {
+    const on = () => {
+      setScrolled(window.scrollY > 30)
+      if (window.scrollY < 200) setActive('')
+    }
     on()
     window.addEventListener('scroll', on)
     return () => window.removeEventListener('scroll', on)
@@ -66,7 +81,7 @@ function Nav() {
       className={`nav ${scrolled ? 'scrolled' : ''}`}
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 1.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
       <a href="#top" className="logo">
         <span>RE</span>
@@ -74,8 +89,9 @@ function Nav() {
       </a>
       <nav className={open ? 'open' : ''}>
         {NAV.map((n) => (
-          <a key={n.id} href={`#${n.id}`} onClick={() => setOpen(false)}>
-            {n.label}
+          <a key={n.id} href={`#${n.id}`} onClick={() => setOpen(false)} className={active === n.id ? 'active' : ''}>
+            {active === n.id && <motion.span layoutId="nav-pill" className="nav-pill" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+            <span className="nav-label">{n.label}</span>
           </a>
         ))}
       </nav>
@@ -100,9 +116,9 @@ function Hero() {
           className="badge"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 0.6 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
         >
-          <span className="dot" /> Open to work · {profile.location}
+          <span className="dot" /> Open to work
         </motion.div>
 
         <h1>
@@ -111,7 +127,7 @@ function Hero() {
               <motion.span
                 initial={{ y: '110%' }}
                 animate={{ y: 0 }}
-                transition={{ delay: 2.05 + wi * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 1.45 + wi * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className={wi === 1 ? 'grad' : ''}
               >
                 {word}
@@ -124,7 +140,7 @@ function Hero() {
           className="hero-role"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.5, duration: 0.6 }}
+          transition={{ delay: 1.9, duration: 0.6 }}
         >
           <span className="mono">&gt;</span> <Typewriter words={profile.roles} />
         </motion.p>
@@ -133,16 +149,16 @@ function Hero() {
           className="hero-sub"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.65, duration: 0.7 }}
+          transition={{ delay: 2.05, duration: 0.7 }}
         >
-          I build ML models and reliable backend systems. Turning ideas into products that actually work.
+          I build machine learning and computer vision systems, reliable backends and products people actually use.
         </motion.p>
 
         <motion.div
           className="hero-cta"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.8, duration: 0.7 }}
+          transition={{ delay: 2.2, duration: 0.7 }}
         >
           <Magnetic href="#projects" className="btn primary">
             View projects <span>→</span>
@@ -158,7 +174,7 @@ function Hero() {
         className="scroll-hint"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.2 }}
+        transition={{ delay: 2.6 }}
         aria-label="Scroll down"
       >
         <span />
@@ -223,7 +239,7 @@ function About() {
 }
 
 function Marquee() {
-  const items = ['Machine Learning', 'Python', 'Backend', 'APIs', 'Telegram Bots', 'Payments', 'Auth', 'NLP', 'Startups', 'Product Design']
+  const items = ['Machine Learning', 'Computer Vision', 'Python', 'YOLO', 'CUDA', 'HPC', 'Backend', 'APIs', 'Android', 'NLP', 'Startups', 'Product Design']
   const row = [...items, ...items]
   return (
     <div className="marquee" aria-hidden>

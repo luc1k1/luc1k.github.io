@@ -21,19 +21,24 @@ export const stats = [
 
 export const skills = [
   {
-    title: 'Machine Learning',
+    title: 'AI & Machine Learning',
     icon: '🧠',
-    items: ['ML models', 'Chatbots', 'NLP', 'Python', 'Data processing'],
+    items: ['ML models', 'LLM apps', 'NLP & chatbots', 'Python', 'Data processing'],
+  },
+  {
+    title: 'Computer Vision & HPC',
+    icon: '👁️',
+    items: ['YOLO / pose estimation', 'Object tracking', 'TensorRT', 'CUDA', 'MPI / OpenMP', 'Redis pipelines'],
   },
   {
     title: 'Backend',
     icon: '⚙️',
-    items: ['REST APIs', 'Authentication', 'Payment systems', 'Telegram bots', 'Admin panels'],
+    items: ['REST APIs', 'Authentication', 'Payment systems', 'Telegram bots', 'Admin panels', 'SQL'],
   },
   {
     title: 'Product & Leadership',
     icon: '🚀',
-    items: ['Startup founding', 'Business strategy', 'UI/UX design', 'Team leadership'],
+    items: ['Startup founding', 'Pricing & unit economics', 'Business strategy', 'UI/UX design', 'Team leadership'],
   },
 ]
 

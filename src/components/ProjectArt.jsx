@@ -55,12 +55,12 @@ function CameraArt() {
       ))}
       <line x1="100" y1="63" x2="100" y2="78" stroke="#ece6ff" strokeWidth="1.6" opacity="0.85" />
       {joints.map(([x, y], i) => (
-        <motion.circle key={i} cx={x} cy={y} r="2.6" fill="#e879f9"
+        <motion.circle key={i} cx={x} cy={y} fill="#e879f9" initial={{ r: 2.4 }}
           animate={{ r: [2.4, 3.4, 2.4] }} transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.12 }} />
       ))}
 
       {/* head-pose vector */}
-      <motion.line x1="100" y1="52" y2="46" stroke="#facc15" strokeWidth="1.8" strokeLinecap="round"
+      <motion.line x1="100" y1="52" y2="46" initial={{ x2: 116 }} stroke="#facc15" strokeWidth="1.8" strokeLinecap="round"
         animate={{ x2: [116, 124, 108, 116] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
 
       {/* scan line */}

@@ -47,5 +47,4 @@ export const projects = [
     ],
     tags: ['Android', 'EdTech', 'LLM', 'Product', 'Pricing', 'Backend', 'Payments'],
   },
-  { title: 'Coming soon', description: 'A new project will appear here.', tags: [], placeholder: true },
 ]
