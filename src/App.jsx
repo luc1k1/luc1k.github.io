@@ -331,6 +331,17 @@ function Projects() {
                   <div className="paper">
                     <span>📄 Research paper</span>
                     <i>{p.paper}</i>
+                    {p.authors && <small>{p.authors}</small>}
+                  </div>
+                )}
+                {p.metrics && (
+                  <div className="metrics">
+                    {p.metrics.map((m) => (
+                      <div key={m.label}>
+                        <b>{m.value}</b>
+                        <span>{m.label}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
                 {p.tags?.length > 0 && (

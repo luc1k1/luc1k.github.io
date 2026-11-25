@@ -7,7 +7,9 @@
 //   description: 'Short project description',
 //   tags: ['Python', 'FastAPI'],
 //   badge: 'Research',        // highlighted label on the card (optional)
-//   paper: 'Paper title',     // linked research paper (optional)
+//   paper: 'Paper title',     // research paper (optional)
+//   authors: 'A. B, C. D',    // paper authors (optional)
+//   metrics: [{ value: '38 ms', label: 'latency' }], // key numbers (optional)
 //   icon: '◉',                // symbol shown on the card art (optional)
 //   link: 'https://...',      // live demo (optional)
 //   github: 'https://...',    // repository (optional)
@@ -20,10 +22,17 @@ export const projects = [
     badge: 'Research',
     icon: '◉',
     description:
-      'Real-time AI surveillance that monitors up to 8 camera streams at once and flags cheating during exams. Distributed producer/worker pipeline on Redis, Faster R-CNN detection, person tracking, walking detection to skip unnecessary inference, and a desktop viewer with a live warnings feed.',
+      'Real-time exam-integrity surveillance: a pose-based AI that tracks every student and flags suspicious head movements across hundreds of camera streams. Scaled on an 18-node university HPC cluster with CUDA, MPI and TensorRT; adaptive head-pose analysis cut false alerts 3–4×.',
     paper:
       'High-Performance Computing for Scalable Real-Time Object Detection in Distributed Video Surveillance Networks',
-    tags: ['Python', 'Computer Vision', 'Faster R-CNN', 'Redis', 'Multithreading', 'Streamlit'],
+    authors: 'E. Ismayilov, R. Eyvazli, K. Shahmuradov · 2026',
+    metrics: [
+      { value: '320', label: 'camera streams' },
+      { value: '38 ms', label: 'median latency' },
+      { value: '9,800', label: 'frames per second' },
+      { value: '91.4%', label: 'scaling efficiency' },
+    ],
+    tags: ['Python', 'YOLOv11-pose', 'TensorRT', 'CUDA', 'MPI / OpenMP', 'ByteTrack', 'Redis'],
   },
   {
     title: 'Eduva',
