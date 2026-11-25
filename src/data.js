@@ -14,9 +14,9 @@ export const profile = {
 }
 
 export const stats = [
-  { value: 6, suffix: '+', label: 'years coding' },
+  { value: 1, suffix: '', label: 'research paper' },
   { value: 1, suffix: '', label: 'startup founded' },
-  { value: 2, suffix: '', label: 'languages' },
+  { value: 320, suffix: '', label: 'camera streams in real time' },
 ]
 
 export const skills = [
