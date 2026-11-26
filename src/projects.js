@@ -16,14 +16,12 @@
 
 export const projects = [
   {
-    title: 'Uni Detect',
+    title: 'High-Performance Computing for Scalable Real-Time Object Detection in Distributed Video Surveillance Networks',
     badge: 'Research',
     art: 'camera',
     summary: 'AI that spots cheating in exam halls across hundreds of live cameras. I built the detection algorithm solo.',
     description:
       'Real-time exam-integrity surveillance across hundreds of camera streams, scaled on an 18-node university HPC cluster (CUDA, MPI, TensorRT). I single-handedly designed and built the core cheating-detection algorithm: pose-based head tracking on YOLOv11l-pose with per-student calibration, writing-pose suppression and temporal scoring — cutting false alerts 3–4×. The multi-camera prototype runs on Redis producer/worker queues with ByteTrack tracking and a desktop operator dashboard.',
-    paper:
-      'High-Performance Computing for Scalable Real-Time Object Detection in Distributed Video Surveillance Networks',
     authors: 'E. Ismayilov, R. Eyvazli, K. Shahmuradov · 2026',
     metrics: [
       { value: '320', label: 'camera streams' },

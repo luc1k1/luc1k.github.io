@@ -44,4 +44,5 @@ export const education = {
   school: 'Azerbaijan State University of Oil and Industry',
   degree: 'B.S. Computer Science',
   period: '2024 — 2028',
+  gpa: '3.6',
 }
