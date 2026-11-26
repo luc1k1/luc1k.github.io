@@ -36,7 +36,7 @@ export default function Background() {
       const my = mouse.y * dpr
       // bucket lines by opacity so we stroke a few paths instead of hundreds
       const buckets = [[], [], [], []]
-      ctx.fillStyle = 'rgba(196, 167, 255, 0.8)'
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
       ctx.beginPath()
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i]
@@ -73,7 +73,7 @@ export default function Background() {
       for (let k = 0; k < 4; k++) {
         const b = buckets[k]
         if (!b.length) continue
-        ctx.strokeStyle = `rgba(139, 92, 246, ${((k + 0.5) / 4) * 0.35})`
+        ctx.strokeStyle = `rgba(255, 255, 255, ${((k + 0.5) / 4) * 0.12})`
         ctx.beginPath()
         for (let n = 0; n < b.length; n += 4) {
           ctx.moveTo(b[n], b[n + 1])
@@ -104,9 +104,6 @@ export default function Background() {
   return (
     <>
       <div className="bg-gradient" aria-hidden />
-      <div className="blob blob-1" aria-hidden />
-      <div className="blob blob-2" aria-hidden />
-      <div className="blob blob-3" aria-hidden />
       <canvas ref={ref} className="bg-canvas" aria-hidden />
       <div className="bg-noise" aria-hidden />
     </>
