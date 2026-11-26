@@ -11,7 +11,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // vendor libs in their own long-cached chunks
-        manualChunks: { react: ['react', 'react-dom'], motion: ['framer-motion'] },
+        manualChunks: { react: ['react', 'react-dom'] },
       },
     },
   },

@@ -1,234 +1,178 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import ProjectArt from './components/ProjectArt.jsx'
+import { useState } from 'react'
+import Background from './components/Background.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
 import { projects } from './projects.js'
 
-const ease = [0.22, 1, 0.36, 1]
+const handle = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
 
-// Quiet fade-up as each block enters the viewport
-function Fade({ children, delay = 0, className, as = "div", now = false }) {
-  const M = motion[as]
-  const show = { opacity: 1, y: 0 }
+function Arrow() {
   return (
-    <M
-      className={className}
-      initial={{ opacity: 0, y: 14 }}
-      {...(now ? { animate: show } : { whileInView: show, viewport: { once: true, margin: "-40px" } })}
-      transition={{ duration: 0.6, delay, ease }}
-    >
-      {children}
-    </M>
+    <svg className="arrow" viewBox="0 0 12 12" aria-hidden>
+      <path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
 
-function Section({ id, title, children }) {
+function Ext({ href, children, ...rest }) {
   return (
-    <section className="section" id={id}>
-      <Fade as="h2" className="section-label">{title}</Fade>
-      <div className="section-body">{children}</div>
+    <a className="ext" href={href} target="_blank" rel="noreferrer" {...rest}>
+      {children}
+      <Arrow />
+    </a>
+  )
+}
+
+function Section({ id, title, compact, children }) {
+  return (
+    <section id={id} className="section">
+      <h2>{title}</h2>
+      <div className={`entries${compact ? " compact" : ""}`}>{children}</div>
     </section>
   )
 }
 
-function Hero() {
+// read.cv-style row: date column on the left, content on the right
+function Entry({ when, children }) {
   return (
-    <header className="hero">
-      <Fade now className="status">
-        <span className="dot" /> Open to work
-      </Fade>
-      <Fade now as="h1" delay={0.05}>{profile.name}</Fade>
-      <Fade now as="p" delay={0.1} className="hero-role">{profile.roles.join(' · ')}</Fade>
-      <Fade now as="p" delay={0.15} className="hero-sub">{profile.summary}</Fade>
-      <Fade now delay={0.2} className="hero-links">
-        <a href={profile.cv} download className="btn">Download CV ↓</a>
-        <a href={`mailto:${profile.email}`} className="link">Email</a>
-        <a href={profile.linkedin} target="_blank" rel="noreferrer" className="link">LinkedIn ↗</a>
-        <a href={profile.github} target="_blank" rel="noreferrer" className="link">GitHub ↗</a>
-      </Fade>
-    </header>
+    <div className="entry">
+      <div className="when">{when}</div>
+      <div className="what">{children}</div>
+    </div>
   )
 }
 
-function ProjectRow({ p, i, onOpen }) {
+function Project({ p }) {
+  const [open, setOpen] = useState(false)
+  const id = `p-${p.year}-${p.title.length}`
   return (
-    <Fade delay={i * 0.05}>
-      <button className="project" onClick={() => onOpen(p)} aria-label={`${p.title} — details`}>
-        <div className="project-text">
-          <div className="project-head">
-            <h3>{p.title}</h3>
-            {p.badge && <span className="tag">{p.badge}</span>}
-          </div>
-          <p>{p.summary}</p>
-          {p.metrics && (
-            <dl className="figures">
-              {p.metrics.slice(0, 4).map((m) => (
-                <div key={m.label}>
-                  <dt>{m.value}</dt>
-                  <dd>{m.label}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          <span className="more">Read more →</span>
-        </div>
-        <div className="project-media" aria-hidden>
-          {p.image ? <img src={p.image} alt="" loading="lazy" /> : <ProjectArt name={p.art} />}
-        </div>
-      </button>
-    </Fade>
-  )
-}
+    <Entry when={p.year}>
+      <h3>{p.title}</h3>
+      {p.badge && <p className="sub">{p.badge}</p>}
+      <p className="text">{p.summary}</p>
 
-function ProjectModal({ p, onClose }) {
-  useEffect(() => {
-    const onKey = (e) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [onClose])
-  return (
-    <motion.div className="modal-bg" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-label={p.title}
-        onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 16 }}
-        transition={{ duration: 0.3, ease }}
-      >
-        <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
-        <div className="modal-media">
-          {p.image ? <img src={p.image} alt="" /> : <ProjectArt name={p.art} />}
-        </div>
-        <div className="modal-body">
-          <div className="project-head">
-            <h3>{p.title}</h3>
-            {p.badge && <span className="tag">{p.badge}</span>}
-          </div>
-          <p>{p.description}</p>
-          {p.metrics && (
-            <dl className="figures">
-              {p.metrics.map((m) => (
-                <div key={m.label}>
-                  <dt>{m.value}</dt>
-                  <dd>{m.label}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-          {(p.paper || p.authors) && (
-            <div className="paper">
-              <span>Research paper</span>
-              {p.paper && <i>{p.paper}</i>}
-              {p.authors && <small>{p.authors}</small>}
+      {p.metrics && (
+        <dl className="metrics">
+          {p.metrics.map((m) => (
+            <div key={m.label}>
+              <dt>{m.value}</dt>
+              <dd>{m.label}</dd>
             </div>
-          )}
-          {p.tags && <p className="stack">{p.tags.join(' · ')}</p>}
+          ))}
+        </dl>
+      )}
+
+      <div className={`details${open ? ' open' : ''}`} id={id}>
+        <div className="details-inner">
+          <p className="text">{p.description}</p>
+          {p.authors && <p className="sub">{p.authors}</p>}
+          {p.tags && <p className="stack">{p.tags.join(' / ')}</p>}
           {(p.link || p.github) && (
-            <div className="hero-links">
-              {p.link && <a className="link" href={p.link} target="_blank" rel="noreferrer">Live ↗</a>}
-              {p.github && <a className="link" href={p.github} target="_blank" rel="noreferrer">GitHub ↗</a>}
-            </div>
+            <p className="links">
+              {p.link && <Ext href={p.link}>Live</Ext>}
+              {p.github && <Ext href={p.github}>Source</Ext>}
+            </p>
           )}
         </div>
-      </motion.div>
-    </motion.div>
-  )
-}
+      </div>
 
-function Contact() {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(profile.email)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1800)
-    } catch {
-      window.location.href = `mailto:${profile.email}`
-    }
-  }
-  return (
-    <Fade>
-      <p className="muted">Open to ML / computer-vision and backend roles. The fastest way to reach me:</p>
-      <button className="email" onClick={copy}>
-        <span>{profile.email}</span>
-        <small>{copied ? '✓ copied' : 'click to copy'}</small>
+      <button className="toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls={id}>
+        {open ? 'Show less' : 'Read more'}
       </button>
-    </Fade>
+    </Entry>
   )
 }
 
 export default function App() {
-  const [open, setOpen] = useState(null)
+  const year = new Date().getFullYear()
   return (
     <>
-      <div className="bg-glow" aria-hidden />
-      <main className="page">
-        <Hero />
+    <Background />
+    <div className="page">
+      <nav className="nav">
+        <a href="#top" className="brand">{profile.name}</a>
+        <div className="nav-links">
+          <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+          <a href={profile.cv} download className="cv">Résumé</a>
+        </div>
+      </nav>
+
+      <main id="top">
+        <header className="intro">
+          <p className="role">{profile.roles.join(' · ')}</p>
+          <h1>{profile.headline}</h1>
+          <p className="bio">{profile.summary}</p>
+          <p className="links">
+            <a className="ext" href={`mailto:${profile.email}`}>Email</a>
+            <Ext href={profile.linkedin}>LinkedIn</Ext>
+            <Ext href={profile.github}>GitHub</Ext>
+          </p>
+        </header>
 
         <Section id="work" title="Selected work">
-          {projects.map((p, k) => (
-            <ProjectRow key={p.title} p={p} i={k} onOpen={setOpen} />
+          {projects.map((p) => (
+            <Project key={p.title} p={p} />
           ))}
         </Section>
 
         <Section id="experience" title="Experience">
           {experience.map((e) => (
-            <Fade className="row" key={e.company}>
-              <div className="row-head">
-                <h3>{e.role} <span className="at">· {e.company}</span></h3>
-                <span className="date">{e.period}</span>
-              </div>
-              <p>{e.short}</p>
-            </Fade>
+            <Entry key={e.company} when={e.period}>
+              <h3>{e.role}</h3>
+              <p className="sub">{e.company}</p>
+              <p className="text">{e.short}</p>
+            </Entry>
           ))}
         </Section>
 
-        <Section id="skills" title="Skills">
-          <dl className="kv">
-            {skills.map((g) => (
-              <Fade className="kv-row" key={g.title}>
-                <dt>{g.title}</dt>
-                <dd>{g.items.join(', ')}</dd>
-              </Fade>
-            ))}
-          </dl>
-        </Section>
-
         <Section id="education" title="Education">
-          <Fade className="row">
-            <div className="row-head">
-              <h3>{education.school}</h3>
-              <span className="date">{education.period}</span>
-            </div>
-            <p>{education.degree}{education.gpa && <> · GPA {education.gpa}</>}</p>
-          </Fade>
+          <Entry when={education.period}>
+            <h3>{education.school}</h3>
+            <p className="sub">
+              {education.degree}
+              {education.gpa && <> · GPA {education.gpa}</>}
+            </p>
+          </Entry>
         </Section>
 
-        <Section id="languages" title="Languages">
-          <dl className="kv">
-            {languages.map((l) => (
-              <Fade className="kv-row" key={l.name}>
-                <dt>{l.name}</dt>
-                <dd>{l.level}</dd>
-              </Fade>
-            ))}
-          </dl>
+        <Section id="skills" title="Skills" compact>
+          {skills.map((g) => (
+            <Entry key={g.title} when={g.title}>
+              <p className="text">{g.items.join(', ')}</p>
+            </Entry>
+          ))}
         </Section>
 
-        <Section id="contact" title="Contact">
-          <Contact />
+        <Section id="languages" title="Languages" compact>
+          {languages.map((l) => (
+            <Entry key={l.name} when={l.name}>
+              <p className="text">{l.level}</p>
+            </Entry>
+          ))}
+        </Section>
+
+        <Section id="contact" title="Contact" compact>
+          <Entry when="Email">
+            <a className="ext" href={`mailto:${profile.email}`}>{profile.email}</a>
+          </Entry>
+          <Entry when="LinkedIn">
+            <Ext href={profile.linkedin}>{handle(profile.linkedin)}</Ext>
+          </Entry>
+          <Entry when="GitHub">
+            <Ext href={profile.github}>{handle(profile.github)}</Ext>
+          </Entry>
+          <Entry when="Résumé">
+            <a className="ext" href={profile.cv} download>Download PDF</a>
+          </Entry>
         </Section>
       </main>
-      <footer>© {new Date().getFullYear()} {profile.name}</footer>
-      <AnimatePresence>{open && <ProjectModal p={open} onClose={() => setOpen(null)} />}</AnimatePresence>
+
+      <footer className="footer">
+        <span>© {year} {profile.name}</span>
+        <a href="#top">Back to top</a>
+      </footer>
+    </div>
     </>
   )
 }

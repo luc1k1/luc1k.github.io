@@ -7,7 +7,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/rasuleyvazli',
   github: 'https://github.com/luc1k1',
   cv: 'Rasul_Eyvazli_CV.pdf',
-  photo: '', // e.g. 'photo.jpg' in /public — replaces the RE monogram
+  headline: 'I build real-time computer vision systems and the infrastructure that runs them at scale.',
   summary:
     'Computer Science student building machine learning and computer vision systems, reliable backends and products people actually use. Co-author of an HPC computer-vision research paper and founder of Eduva.',
 }
@@ -44,5 +44,5 @@ export const education = {
   school: 'Azerbaijan State University of Oil and Industry',
   degree: 'B.S. Computer Science',
   period: '2024 — 2028',
-  gpa: '3.6',
+  gpa: '3.6 / 4.0',
 }
