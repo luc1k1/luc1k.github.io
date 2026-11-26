@@ -40,17 +40,23 @@ h1, h2, h3 { font-weight: 500; }
 .nav-links { display: flex; gap: 22px; font-size: 14px; color: var(--fg-2); }
 .nav-links a { transition: color 0.15s; }
 .nav-links a:hover { color: var(--fg); }
-.nav-links .cv { color: var(--fg); }
 
 /* ===== Intro ===== */
-.intro { padding: 96px 0 80px; }
-.role { font-size: 13px; color: var(--fg-3); letter-spacing: 0; }
+.intro { padding: 56px 0 44px; }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--fg-2); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15); }
 .intro h1 {
-  margin-top: 14px; font-size: clamp(28px, 4.4vw, 36px); line-height: 1.2; letter-spacing: -0.028em;
+  margin-top: 12px; font-size: clamp(28px, 4.4vw, 36px); line-height: 1.2; letter-spacing: -0.028em;
   font-weight: 500; text-wrap: balance;
 }
-.bio { margin-top: 20px; color: var(--fg-2); max-width: 580px; text-wrap: pretty; }
-.links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 24px; }
+.bio { margin-top: 14px; color: var(--fg-2); max-width: 580px; text-wrap: pretty; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 24px; }
+.btn {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 8px;
+  background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 500; transition: background 0.15s;
+}
+.btn:hover { background: #fff; }
 
 /* Links: quiet underline that strengthens on hover */
 .ext {
@@ -64,24 +70,25 @@ h1, h2, h3 { font-weight: 500; }
 .ext:hover .arrow { color: var(--fg); transform: translate(1px, -1px); }
 
 /* ===== Sections ===== */
-.section { padding: 40px 0; border-top: 1px solid var(--line); }
-.section h2 { font-size: 13px; color: var(--fg-3); font-weight: 400; margin-bottom: 24px; }
-.entries { display: grid; gap: 32px; }
-.entries.compact { gap: 12px; }
+.section { padding: 28px 0; border-top: 1px solid var(--line); }
+.section h2 { font-size: 13px; color: var(--fg-3); font-weight: 400; margin-bottom: 16px; }
+.entries { display: grid; gap: 22px; }
+.entries.compact { gap: 8px; }
 .compact .when { white-space: normal; }
 .entry { display: grid; grid-template-columns: var(--when) 1fr; gap: 24px; }
 .when { color: var(--fg-3); font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; padding-top: 1px; }
 .what { min-width: 0; }
 .what h3 { font-size: 15px; line-height: 1.45; text-wrap: balance; }
+.at { color: var(--fg-2); font-weight: 400; }
 .sub { color: var(--fg-2); font-size: 14px; margin-top: 2px; }
-.text { color: var(--fg-2); margin-top: 8px; text-wrap: pretty; }
+.text { color: var(--fg-2); margin-top: 4px; text-wrap: pretty; }
 .what > .text:first-child { margin-top: 0; }
 .stack { margin-top: 12px; font-size: 13px; color: var(--fg-3); }
 
 /* Key numbers — tabular, separated by hairlines */
 .metrics {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  margin-top: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-top: 14px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
 .metrics div { padding: 12px 0 12px 14px; border-left: 1px solid var(--line); }
 .metrics div:first-child { padding-left: 0; border-left: none; }
@@ -102,10 +109,10 @@ h1, h2, h3 { font-weight: 500; }
 
 /* ===== Footer ===== */
 .footer {
-  display: flex; justify-content: space-between; gap: 16px;
-  padding: 32px 0 56px; border-top: 1px solid var(--line); font-size: 13px; color: var(--fg-3);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px 16px;
+  padding: 28px 0 48px; scroll-margin-top: 400px; border-top: 1px solid var(--line); font-size: 13px; color: var(--fg-3);
 }
-.footer a:hover { color: var(--fg); }
+.footer .links { color: var(--fg-2); font-size: 14px; }
 
 a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; border-radius: 3px; }
 
@@ -114,8 +121,7 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
   .page { padding: 0 20px; }
   .nav { margin: 0 -20px; padding: 0 20px; }
   .nav-links { gap: 16px; }
-  .nav-links a:not(.cv):not([href="#contact"]) { display: none; }
-  .intro { padding: 64px 0 56px; }
+  .intro { padding: 40px 0 32px; }
   .entry { grid-template-columns: 1fr; gap: 4px; }
   .when { font-size: 13px; }
   .metrics { grid-template-columns: repeat(2, 1fr); }

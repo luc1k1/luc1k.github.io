@@ -18,7 +18,7 @@ export const projects = [
     title: 'High-Performance Computing for Scalable Real-Time Object Detection in Distributed Video Surveillance Networks',
     year: '2026',
     badge: 'Research paper · co-author',
-    summary: 'AI that spots cheating in exam halls across hundreds of live cameras. I built the detection algorithm solo.',
+    summary: 'Real-time cheating detection across hundreds of live exam-hall cameras on an 18-node HPC cluster. I designed and built the core detection algorithm: pose-based head tracking, calibration and temporal scoring.',
     description:
       'Real-time exam-integrity surveillance across hundreds of camera streams, scaled on an 18-node university HPC cluster (CUDA, MPI, TensorRT). I single-handedly designed and built the core cheating-detection algorithm: pose-based head tracking on YOLOv11l-pose with per-student calibration, writing-pose suppression and temporal scoring — cutting false alerts 3–4×. The multi-camera prototype runs on Redis producer/worker queues with ByteTrack tracking and a desktop operator dashboard.',
     authors: 'E. Ismayilov, R. Eyvazli, K. Shahmuradov · 2026',
@@ -29,18 +29,5 @@ export const projects = [
       { value: '3–4×', label: 'fewer false alerts' },
     ],
     tags: ['Python', 'YOLOv11-pose', 'TensorRT', 'CUDA', 'MPI / OpenMP', 'ByteTrack', 'Redis'],
-  },
-  {
-    title: 'Eduva',
-    year: '2025 — 26',
-    badge: 'Android app · founder',
-    summary: 'Highlight any text — AI explains it, gives an example and rates its difficulty. Founder & CEO.',
-    description:
-      'AI-powered Android reading app for students: select any passage at any moment and the AI explains it in plain words, gives a real-world example and rates how difficult the concept is. I founded the company and ran it as CEO — product vision, business strategy, pricing and the full financial model / unit economics — and worked hands-on with the CTO on the AI features and backend, including payments and authentication.',
-    metrics: [
-      { value: 'Founder', label: '& CEO' },
-      { value: '8 mo', label: 'Nov 2025 — Jun 2026' },
-    ],
-    tags: ['Android', 'EdTech', 'LLM', 'Product', 'Pricing', 'Backend', 'Payments'],
   },
 ]

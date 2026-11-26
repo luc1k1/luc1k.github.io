@@ -3,8 +3,6 @@ import Background from './components/Background.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
 import { projects } from './projects.js'
 
-const handle = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
-
 function Arrow() {
   return (
     <svg className="arrow" viewBox="0 0 12 12" aria-hidden>
@@ -13,9 +11,9 @@ function Arrow() {
   )
 }
 
-function Ext({ href, children, ...rest }) {
+function Ext({ href, children }) {
   return (
-    <a className="ext" href={href} target="_blank" rel="noreferrer" {...rest}>
+    <a className="ext" href={href} target="_blank" rel="noreferrer">
       {children}
       <Arrow />
     </a>
@@ -26,12 +24,12 @@ function Section({ id, title, compact, children }) {
   return (
     <section id={id} className="section">
       <h2>{title}</h2>
-      <div className={`entries${compact ? " compact" : ""}`}>{children}</div>
+      <div className={`entries${compact ? ' compact' : ''}`}>{children}</div>
     </section>
   )
 }
 
-// read.cv-style row: date column on the left, content on the right
+// Date / label column on the left, content on the right
 function Entry({ when, children }) {
   return (
     <div className="entry">
@@ -43,7 +41,7 @@ function Entry({ when, children }) {
 
 function Project({ p }) {
   const [open, setOpen] = useState(false)
-  const id = `p-${p.year}-${p.title.length}`
+  const id = `p-${p.year}`
   return (
     <Entry when={p.year}>
       <h3>{p.title}</h3>
@@ -86,93 +84,76 @@ export default function App() {
   const year = new Date().getFullYear()
   return (
     <>
-    <Background />
-    <div className="page">
-      <nav className="nav">
-        <a href="#top" className="brand">{profile.name}</a>
-        <div className="nav-links">
-          <a href="#work">Work</a>
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
-          <a href={profile.cv} download className="cv">Résumé</a>
-        </div>
-      </nav>
+      <Background />
+      <div className="page">
+        <nav className="nav">
+          <a href="#top" className="brand">{profile.name}</a>
+          <div className="nav-links">
+            <a href="#research">Research</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </nav>
 
-      <main id="top">
-        <header className="intro">
-          <p className="role">{profile.roles.join(' · ')}</p>
-          <h1>{profile.headline}</h1>
-          <p className="bio">{profile.summary}</p>
+        <main id="top">
+          <header className="intro">
+            <p className="status"><span className="dot" />{profile.status}</p>
+            <h1>{profile.headline}</h1>
+            <p className="bio">{profile.summary}</p>
+            <p className="actions">
+              <a className="btn" href={profile.cv} download>Download résumé</a>
+              <a className="ext" href={`mailto:${profile.email}`}>Email</a>
+              <Ext href={profile.linkedin}>LinkedIn</Ext>
+              <Ext href={profile.github}>GitHub</Ext>
+            </p>
+          </header>
+
+          <Section id="research" title="Research">
+            {projects.map((p) => (
+              <Project key={p.title} p={p} />
+            ))}
+          </Section>
+
+          <Section id="experience" title="Experience">
+            {experience.map((e) => (
+              <Entry key={e.company} when={e.period}>
+                <h3>{e.role} <span className="at">· {e.company}</span></h3>
+                <p className="text">{e.short}</p>
+              </Entry>
+            ))}
+          </Section>
+
+          <Section id="education" title="Education">
+            <Entry when={education.period}>
+              <h3>{education.school}</h3>
+              <p className="sub">
+                {education.degree}
+                {education.gpa && <> · GPA {education.gpa}</>}
+              </p>
+            </Entry>
+          </Section>
+
+          <Section id="skills" title="Skills" compact>
+            {skills.map((g) => (
+              <Entry key={g.title} when={g.title}>
+                <p className="text">{g.items.join(', ')}</p>
+              </Entry>
+            ))}
+            <Entry when="Languages">
+              <p className="text">{languages.map((l) => `${l.name} (${l.level.toLowerCase()})`).join(', ')}</p>
+            </Entry>
+          </Section>
+        </main>
+
+        <footer className="footer" id="contact">
           <p className="links">
-            <a className="ext" href={`mailto:${profile.email}`}>Email</a>
+            <a className="ext" href={`mailto:${profile.email}`}>{profile.email}</a>
             <Ext href={profile.linkedin}>LinkedIn</Ext>
             <Ext href={profile.github}>GitHub</Ext>
           </p>
-        </header>
-
-        <Section id="work" title="Selected work">
-          {projects.map((p) => (
-            <Project key={p.title} p={p} />
-          ))}
-        </Section>
-
-        <Section id="experience" title="Experience">
-          {experience.map((e) => (
-            <Entry key={e.company} when={e.period}>
-              <h3>{e.role}</h3>
-              <p className="sub">{e.company}</p>
-              <p className="text">{e.short}</p>
-            </Entry>
-          ))}
-        </Section>
-
-        <Section id="education" title="Education">
-          <Entry when={education.period}>
-            <h3>{education.school}</h3>
-            <p className="sub">
-              {education.degree}
-              {education.gpa && <> · GPA {education.gpa}</>}
-            </p>
-          </Entry>
-        </Section>
-
-        <Section id="skills" title="Skills" compact>
-          {skills.map((g) => (
-            <Entry key={g.title} when={g.title}>
-              <p className="text">{g.items.join(', ')}</p>
-            </Entry>
-          ))}
-        </Section>
-
-        <Section id="languages" title="Languages" compact>
-          {languages.map((l) => (
-            <Entry key={l.name} when={l.name}>
-              <p className="text">{l.level}</p>
-            </Entry>
-          ))}
-        </Section>
-
-        <Section id="contact" title="Contact" compact>
-          <Entry when="Email">
-            <a className="ext" href={`mailto:${profile.email}`}>{profile.email}</a>
-          </Entry>
-          <Entry when="LinkedIn">
-            <Ext href={profile.linkedin}>{handle(profile.linkedin)}</Ext>
-          </Entry>
-          <Entry when="GitHub">
-            <Ext href={profile.github}>{handle(profile.github)}</Ext>
-          </Entry>
-          <Entry when="Résumé">
-            <a className="ext" href={profile.cv} download>Download PDF</a>
-          </Entry>
-        </Section>
-      </main>
-
-      <footer className="footer">
-        <span>© {year} {profile.name}</span>
-        <a href="#top">Back to top</a>
-      </footer>
-    </div>
+          <span>© {year} {profile.name}</span>
+        </footer>
+      </div>
     </>
   )
 }
