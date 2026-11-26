@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Background from './components/Background.jsx'
 import Pet from './components/Pet.jsx'
-import Glass from './components/Glass.jsx'
 import HandDemo from './components/HandDemo.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
 import { projects } from './projects.js'
@@ -14,9 +13,9 @@ function Arrow() {
   )
 }
 
-function Ext({ href, children, className = 'ext' }) {
+function Ext({ href, children }) {
   return (
-    <a className={className} href={href} target="_blank" rel="noreferrer">
+    <a className="ext" href={href} target="_blank" rel="noreferrer">
       {children}
       <Arrow />
     </a>
@@ -136,10 +135,9 @@ export default function App() {
     <>
       <Background />
       <Pet />
-      <Glass />
       {demo && <HandDemo onClose={() => setDemo(false)} />}
       <div className="page">
-        <nav className="nav glass">
+        <nav className="nav">
           <a href="#top" className="brand">{profile.name}</a>
           <div className="nav-links">
             <a href="#research">Research</a>
@@ -155,9 +153,9 @@ export default function App() {
             <p className="bio">{profile.summary}</p>
             <p className="actions">
               <a className="btn" href={profile.cv} download>Download résumé</a>
-              <a className="pill glass" href={`mailto:${profile.email}`}>Email</a>
-              <Ext className="pill glass" href={profile.linkedin}>LinkedIn</Ext>
-              <Ext className="pill glass" href={profile.github}>GitHub</Ext>
+              <a className="ext" href={`mailto:${profile.email}`}>Email</a>
+              <Ext href={profile.linkedin}>LinkedIn</Ext>
+              <Ext href={profile.github}>GitHub</Ext>
             </p>
           </header>
 
@@ -177,7 +175,7 @@ export default function App() {
               </p>
               <p className="actions">
                 <button className="btn" onClick={() => setDemo(true)}>Launch demo</button>
-                <Ext className="pill glass" href={`${profile.github}/hand-tracking`}>Source</Ext>
+                <Ext href={`${profile.github}/hand-tracking`}>Source</Ext>
               </p>
             </Entry>
           </Section>

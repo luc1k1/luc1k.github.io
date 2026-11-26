@@ -137,7 +137,7 @@ export default function Pet() {
   return (
     <div className={`pet${hungry && !eating ? ' is-hungry' : ''}`} ref={root}>
       {open && (
-        <div className="pet-card glass" role="dialog" aria-label="Tensor, a tiny model">
+        <div className="pet-card" role="dialog" aria-label="Tensor, a tiny model">
           <div className="pet-card-head">
             <b>Tensor</b>
             <span className={`pet-mood${hungry && !eating ? ' warn' : ''}`}>{mood}</span>
@@ -190,11 +190,11 @@ export default function Pet() {
           </g>
         </svg>
         {greet && !open ? (
-          <span className="pet-hint pet-hi glass" aria-hidden>
+          <span className="pet-hint pet-hi" aria-hidden>
             <b>Hi, I’m Tensor.</b> I’m a tiny model — click to feed me some data.
           </span>
         ) : (
-          hungry && !open && <span className="pet-hint glass" aria-hidden>feed me</span>
+          hungry && !open && <span className="pet-hint" aria-hidden>feed me</span>
         )}
       </button>
     </div>

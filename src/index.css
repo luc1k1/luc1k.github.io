@@ -29,51 +29,17 @@ h1, h2, h3 { font-weight: 500; }
 @keyframes enter { from { opacity: 0; transform: translateY(6px); } }
 
 /* ===== Nav ===== */
-/* ===== Liquid glass ===== */
-.glass {
-  isolation: isolate;
-  background:
-    radial-gradient(180px circle at var(--gx, 25%) var(--gy, -20%), rgba(255, 255, 255, 0.13), transparent 65%),
-    linear-gradient(165deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.025) 50%, rgba(255, 255, 255, 0.055)),
-    rgba(12, 12, 12, 0.42);
-  -webkit-backdrop-filter: blur(14px) saturate(170%) brightness(1.08);
-  backdrop-filter: blur(14px) saturate(170%) brightness(1.08);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-    inset 0 0 22px rgba(255, 255, 255, 0.035),
-    0 12px 32px -12px rgba(0, 0, 0, 0.75);
-}
-/* bends the backdrop like a lens — Chromium only */
-.lg-refract .glass { backdrop-filter: url(#lg-refract) blur(12px) saturate(170%) brightness(1.08); }
-/* rim light that turns toward the pointer */
-.glass::before {
-  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: conic-gradient(from var(--ga, 150deg),
-    rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1) 22%, rgba(255, 255, 255, 0.04) 50%,
-    rgba(255, 255, 255, 0.1) 78%, rgba(255, 255, 255, 0.6));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
-
-/* Floating glass nav */
 .nav {
-  position: sticky; top: 12px; z-index: 10;
+  position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  height: 52px; margin: 12px -14px 0; padding: 0 8px 0 20px; border-radius: 999px;
+  height: 60px; margin: 0 -24px; padding: 0 24px;
+  background: rgba(10, 10, 10, 0.8); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 .brand { font-weight: 500; }
-.nav-links { display: flex; gap: 2px; font-size: 14px; color: var(--fg-2); }
-.nav-links a { padding: 7px 13px; border-radius: 999px; transition: color 0.15s, background 0.15s; }
-.nav-links a:hover { color: var(--fg); background: rgba(255, 255, 255, 0.08); }
-
-/* Glass pill links */
-.pill {
-  position: relative; display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 14px;
-  border-radius: 8px; font-size: 14px; color: var(--fg); transition: transform 0.2s var(--ease);
-}
-.pill:hover { transform: translateY(-1px); }
-.pill:hover .arrow { color: var(--fg); transform: translate(1px, -1px); }
+.nav-links { display: flex; gap: 22px; font-size: 14px; color: var(--fg-2); }
+.nav-links a { transition: color 0.15s; }
+.nav-links a:hover { color: var(--fg); }
 
 /* ===== Intro ===== */
 .intro { padding: 56px 0 44px; }
@@ -85,7 +51,7 @@ h1, h2, h3 { font-weight: 500; }
 }
 .bio { margin-top: 26px; color: var(--fg-2); max-width: 580px; text-wrap: pretty; }
 .links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 24px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 24px; }
 .btn {
   display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 8px;
   background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 500; transition: background 0.15s;
@@ -180,8 +146,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 /* ===== Small screens ===== */
 @media (max-width: 600px) {
   .page { padding: 0 20px; }
-  .nav { margin: 10px -8px 0; padding: 0 6px 0 16px; height: 48px; }
-  .nav-links a { padding: 6px 10px; }
+  .nav { margin: 0 -20px; padding: 0 20px; }
+  .nav-links { gap: 16px; }
   .intro { padding: 40px 0 32px; }
   .entry { grid-template-columns: 1fr; gap: 4px; }
   .when { font-size: 13px; }
@@ -227,7 +193,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 
 .pet-hint {
   position: absolute; right: 84px; top: 50%; transform: translateY(-50%); white-space: nowrap;
-  font-size: 13px; line-height: 1; color: var(--fg); padding: 9px 12px; border-radius: 12px; pointer-events: none;
+  font-size: 13px; line-height: 1; color: var(--fg); padding: 9px 12px; border-radius: 10px; pointer-events: none;
+  background: #161616; border: 1px solid var(--line-2); box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.8);
   animation: pet-hint 0.4s var(--ease) both;
 }
 @keyframes pet-hint { from { opacity: 0; transform: translate(6px, -50%); } }
@@ -235,7 +202,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 .pet-hi b { color: var(--fg); font-weight: 500; }
 
 .pet-card {
-  position: relative; width: 240px; padding: 15px; border-radius: 18px; line-height: 1.5;
+  position: relative; width: 240px; padding: 15px; border-radius: 14px; line-height: 1.5;
+  background: #141414; border: 1px solid var(--line-2); box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.8);
   animation: pet-card 0.25s var(--ease) both;
 }
 @keyframes pet-card { from { opacity: 0; transform: translateY(6px) scale(0.98); } }
@@ -272,13 +240,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 /* ===== Hand-tracking demo window ===== */
 .demo {
   position: fixed; z-index: 30; left: 50%; bottom: 24px; transform: translateX(-50%);
-  width: min(460px, calc(100vw - 24px)); padding: 10px; border-radius: 22px;
-}
-.demo.glass {
-  background:
-    radial-gradient(220px circle at var(--gx, 25%) var(--gy, -20%), rgba(255, 255, 255, 0.10), transparent 65%),
-    linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.04)),
-    rgba(14, 14, 14, 0.8);
+  width: min(460px, calc(100vw - 24px)); padding: 10px; border-radius: 18px;
+  background: #121212; border: 1px solid var(--line-2); box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.9);
   animation: demo-in 0.35s var(--ease) both;
 }
 @keyframes demo-in { from { opacity: 0; transform: translate(-50%, 16px) scale(0.98); } }

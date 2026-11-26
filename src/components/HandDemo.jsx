@@ -164,7 +164,7 @@ export default function HandDemo({ onClose }) {
   const up = fingers ? fingers.filter((f) => !f.bent).length : 0
 
   return (
-    <div className="demo glass" role="dialog" aria-label="Hand tracking demo">
+    <div className="demo" role="dialog" aria-label="Hand tracking demo">
       <div className="demo-bar">
         <span className="demo-title">hand-tracking <i>· MediaPipe, on-device</i></span>
         <button className="demo-x" onClick={onClose} aria-label="Close demo">×</button>
