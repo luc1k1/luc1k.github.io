@@ -27,10 +27,21 @@ export default function Pet() {
   const [petted, setPetted] = useState(false)
   const [pops, setPops] = useState([])
   const [eye, setEye] = useState({ x: 0, y: 0 })
+  const [greet, setGreet] = useState(false)
   const root = useRef(null)
   const svg = useRef(null)
 
   const hungry = now - state.fedAt > HUNGRY_AFTER
+
+  // say hi once per visit
+  useEffect(() => {
+    let seen = false
+    try { seen = sessionStorage.getItem('tensor-hi') === '1'; sessionStorage.setItem('tensor-hi', '1') } catch {}
+    if (seen) return
+    const a = setTimeout(() => setGreet(true), 1800)
+    const b = setTimeout(() => setGreet(false), 9000)
+    return () => { clearTimeout(a); clearTimeout(b) }
+  }, [])
 
   // clock for hunger
   useEffect(() => {
@@ -115,6 +126,7 @@ export default function Pet() {
   const pet = () => {
     setPetted(true)
     setTimeout(() => setPetted(false), 900)
+    setGreet(false)
     setOpen((v) => !v)
   }
 
@@ -146,12 +158,12 @@ export default function Pet() {
       ))}
 
       <button className="pet-btn" onClick={pet} aria-label="Tensor the pet — open to feed" aria-expanded={open}>
-        <svg ref={svg} viewBox="0 0 64 64" width="64" height="64" aria-hidden>
+        <svg ref={svg} viewBox="0 0 64 64" width="76" height="76" aria-hidden>
           {/* data pellet */}
           {eating && <rect className="pet-pellet" x="29" y="0" width="6" height="6" rx="1.5" />}
           {/* antenna — lights up when fed */}
           <path d="M32 14 V7" className="pet-line" />
-          <circle cx="32" cy="6" r="2.6" className={`pet-node${!hungry || eating ? ' on' : ''}`} />
+          <circle cx="32" cy="6" r="2.8" className={`pet-node${!hungry || eating ? ' on' : ' alert'}`} />
           {/* body */}
           <g className={`pet-body${eating ? ' squish' : ''}`}>
             <rect x="9" y="14" width="46" height="40" rx="15" className="pet-shell" />
@@ -177,7 +189,13 @@ export default function Pet() {
             )}
           </g>
         </svg>
-        {hungry && !open && <span className="pet-hint" aria-hidden>feed me</span>}
+        {greet && !open ? (
+          <span className="pet-hint pet-hi" aria-hidden>
+            <b>Hi, I’m Tensor.</b> I’m a tiny model — click to feed me some data.
+          </span>
+        ) : (
+          hungry && !open && <span className="pet-hint" aria-hidden>feed me</span>
+        )}
       </button>
     </div>
   )

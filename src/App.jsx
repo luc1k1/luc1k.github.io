@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Background from './components/Background.jsx'
 import Pet from './components/Pet.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
@@ -30,10 +30,51 @@ function Section({ id, title, compact, children }) {
   )
 }
 
-// Author list with my own name highlighted, as in an academic CV
-function Authors({ list }) {
-  const me = `${profile.name[0]}. ${profile.name.split(' ').pop()}`
-  return list.split(me).flatMap((part, i) => (i ? [<b key={i}>{me}</b>, part] : [part]))
+// The focus phrase in the headline gets a YOLO-style detection box
+function Headline({ text, focus }) {
+  const i = focus ? text.indexOf(focus) : -1
+  if (i < 0) return text
+  return (
+    <>
+      {text.slice(0, i)}
+      <span className="det">
+        {focus}
+        <span className="det-box" aria-hidden>
+          <span className="det-tag">{focus.replace(/ /g, '_')} 0.98</span>
+        </span>
+      </span>
+      {text.slice(i + focus.length)}
+    </>
+  )
+}
+
+// Counts the leading number of a metric up from 0 the first time it scrolls into view
+function CountUp({ value }) {
+  const m = /^([\d,.]+)(.*)$/.exec(value)
+  const ref = useRef(null)
+  const target = m ? parseFloat(m[1].replace(/,/g, '')) : 0
+  const canAnimate = m && typeof IntersectionObserver !== 'undefined' && !matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [n, setN] = useState(canAnimate ? 0 : target)
+  useEffect(() => {
+    if (!canAnimate) return
+    let raf
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return
+      io.disconnect()
+      const t0 = performance.now()
+      const tick = (t) => {
+        const k = Math.min(1, (t - t0) / 1100)
+        setN(target * (1 - Math.pow(1 - k, 3)))
+        if (k < 1) raf = requestAnimationFrame(tick)
+      }
+      raf = requestAnimationFrame(tick)
+    })
+    io.observe(ref.current)
+    return () => { io.disconnect(); cancelAnimationFrame(raf) }
+  }, [canAnimate, target])
+  if (!m) return value
+  const shown = m[1].includes(',') ? Math.round(n).toLocaleString('en-US') : Math.round(n)
+  return <span ref={ref}>{shown}{m[2]}</span>
 }
 
 // Date / label column on the left, content on the right
@@ -52,15 +93,14 @@ function Project({ p }) {
   return (
     <Entry when={p.year}>
       <h3>{p.title}</h3>
-      {p.authors && <p className="sub authors"><Authors list={p.authors} /></p>}
-      {p.badge && <p className="venue">{p.badge}</p>}
+      {p.badge && <p className="sub">{p.badge}</p>}
       <p className="text">{p.summary}</p>
 
       {p.metrics && (
         <dl className="metrics">
           {p.metrics.map((m) => (
             <div key={m.label}>
-              <dt>{m.value}</dt>
+              <dt><CountUp value={m.value} /></dt>
               <dd>{m.label}</dd>
             </div>
           ))}
@@ -106,7 +146,7 @@ export default function App() {
         <main id="top">
           <header className="intro">
             <p className="status"><span className="dot" />{profile.status}</p>
-            <h1>{profile.headline}</h1>
+            <h1><Headline text={profile.headline} focus={profile.focus} /></h1>
             <p className="bio">{profile.summary}</p>
             <p className="actions">
               <a className="btn" href={profile.cv} download>Download résumé</a>

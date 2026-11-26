@@ -49,7 +49,7 @@ h1, h2, h3 { font-weight: 500; }
   margin-top: 12px; font-size: clamp(28px, 4.4vw, 36px); line-height: 1.2; letter-spacing: -0.028em;
   font-weight: 500; text-wrap: balance;
 }
-.bio { margin-top: 14px; color: var(--fg-2); max-width: 580px; text-wrap: pretty; }
+.bio { margin-top: 26px; color: var(--fg-2); max-width: 580px; text-wrap: pretty; }
 .links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 24px; }
 .btn {
@@ -57,6 +57,33 @@ h1, h2, h3 { font-weight: 500; }
   background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 500; transition: background 0.15s;
 }
 .btn:hover { background: #fff; }
+
+/* YOLO-style detection box around the focus phrase */
+.det { position: relative; white-space: nowrap; }
+.det-box {
+  --c: #4ade80; --k: 9px;
+  position: absolute; inset: 0.06em -0.1em -0.1em -0.2em; pointer-events: none; border-radius: 2px;
+  border: 1px dashed rgba(74, 222, 128, 0.35);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--k) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1.5px var(--k) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--k) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1.5px var(--k) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--k) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.5px var(--k) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--k) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1.5px var(--k) no-repeat,
+    rgba(74, 222, 128, 0.04);
+  animation: det-in 0.7s var(--ease) 0.5s both;
+}
+.det-tag {
+  position: absolute; left: -1px; top: 100%; margin-top: 3px;
+  font: 500 10.5px/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: 0;
+  padding: 3px 5px; border-radius: 3px; background: #4ade80; color: #04140a; white-space: nowrap;
+  animation: det-tag 0.4s var(--ease) 1s both;
+}
+@keyframes det-in { from { opacity: 0; transform: scale(1.12); } }
+@keyframes det-tag { from { opacity: 0; transform: translateY(-3px); } }
 
 /* Links: quiet underline that strengthens on hover */
 .ext {
@@ -83,8 +110,6 @@ h1, h2, h3 { font-weight: 500; }
 .sub { color: var(--fg-2); font-size: 14px; margin-top: 2px; }
 .text { color: var(--fg-2); margin-top: 4px; text-wrap: pretty; }
 .what > .text:first-child { margin-top: 0; }
-.authors b { color: var(--fg); font-weight: 500; }
-.venue { font-size: 13px; color: var(--fg-3); margin-top: 2px; }
 .stack { margin-top: 12px; font-size: 13px; color: var(--fg-3); }
 
 /* Key numbers — tabular, separated by hairlines */
@@ -140,8 +165,17 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 .pet-btn { position: relative; display: block; padding: 0; line-height: 0; border-radius: 16px; }
 .pet-btn svg { overflow: visible; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6)); transition: transform 0.25s var(--ease); }
 .pet-btn:hover svg { transform: translateY(-3px) rotate(-3deg); }
-.pet.is-hungry .pet-btn svg { animation: pet-bob 2.6s ease-in-out infinite; }
-@keyframes pet-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.pet.is-hungry .pet-btn svg { animation: pet-hop 4s var(--ease) infinite; }
+@keyframes pet-hop {
+  0%, 70%, 100% { transform: translateY(0) scale(1, 1); }
+  76% { transform: translateY(0) scale(1.06, 0.92); }
+  84% { transform: translateY(-12px) scale(0.97, 1.04); }
+  92% { transform: translateY(0) scale(1.04, 0.96); }
+}
+.pet-btn::after {
+  content: ''; position: absolute; left: 50%; bottom: 2px; width: 46px; height: 8px; margin-left: -23px; z-index: -1;
+  border-radius: 50%; background: radial-gradient(rgba(74, 222, 128, 0.22), transparent 70%);
+}
 
 .pet-shell { fill: #ededed; }
 .pet-eye { fill: #0a0a0a; transition: ry 0.12s; }
@@ -149,6 +183,8 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 .pet-line { stroke: #6b6b6b; stroke-width: 1.6; stroke-linecap: round; }
 .pet-node { fill: #3a3a3a; transition: fill 0.3s; }
 .pet-node.on { fill: #4ade80; filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.8)); }
+.pet-node.alert { fill: #fbbf24; animation: pet-alert 1.4s ease-in-out infinite; }
+@keyframes pet-alert { 50% { fill: #3a3a3a; } }
 .pet-body { transform-box: fill-box; transform-origin: 50% 100%; }
 .pet-body.squish { animation: pet-chomp 0.22s ease-in-out 0.55s 3; }
 @keyframes pet-chomp { 50% { transform: scale(1.06, 0.92); } }
@@ -156,12 +192,19 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 @keyframes pet-drop { from { transform: translateY(-14px); opacity: 0; } 20% { opacity: 1; } to { transform: translateY(38px); opacity: 1; } }
 
 .pet-hint {
-  position: absolute; right: 70px; top: 50%; transform: translateY(-50%); white-space: nowrap;
-  font-size: 12px; line-height: 1; color: var(--fg-2); padding: 6px 9px; border-radius: 8px;
-  background: #151515; border: 1px solid var(--line-2); pointer-events: none;
+  position: absolute; right: 84px; top: 50%; transform: translateY(-50%); white-space: nowrap;
+  font-size: 13px; line-height: 1; color: var(--fg); padding: 8px 11px; border-radius: 10px;
+  background: #161616; border: 1px solid var(--line-2); pointer-events: none;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.8);
   animation: pet-hint 0.4s var(--ease) both;
 }
 @keyframes pet-hint { from { opacity: 0; transform: translate(6px, -50%); } }
+.pet-hint::after {
+  content: ''; position: absolute; right: -5px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+  background: inherit; border: inherit; border-width: 1px 1px 0 0; transform: rotate(45deg);
+}
+.pet-hi { width: 220px; white-space: normal; line-height: 1.45; color: var(--fg-2); }
+.pet-hi b { color: var(--fg); font-weight: 500; }
 
 .pet-card {
   width: 236px; padding: 14px; border-radius: 12px; line-height: 1.5;
@@ -188,14 +231,15 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 .pet-feed:hover { background: #fff; }
 .pet-feed:disabled { opacity: 0.55; cursor: progress; }
 .pet-pop {
-  position: absolute; right: 8px; bottom: 64px; font-size: 12px; color: #4ade80; pointer-events: none;
+  position: absolute; right: 10px; bottom: 86px; font-size: 12.5px; color: #4ade80; pointer-events: none;
   animation: pet-pop 1.2s var(--ease) forwards;
 }
 @keyframes pet-pop { from { opacity: 0; transform: translateY(6px); } 20% { opacity: 1; } to { opacity: 0; transform: translateY(-26px); } }
 
 @media (max-width: 600px) {
   .pet { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); }
-  .pet-btn svg { width: 52px; height: 52px; }
-  .pet-hint { right: 58px; }
+  .pet-btn svg { width: 60px; height: 60px; }
+  .pet-hint { right: 68px; }
+  .pet-hi { width: 190px; }
   .footer { padding-bottom: 88px; }
 }

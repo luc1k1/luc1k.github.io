@@ -8,6 +8,7 @@ export const profile = {
   github: 'https://github.com/luc1k1',
   cv: 'Rasul_Eyvazli_CV.pdf',
   headline: 'Machine learning engineer focused on computer vision.',
+  focus: 'computer vision', // part of the headline that gets the detection box
   summary:
     'I build real-time detection systems that run at scale. Co-author of an HPC research paper on object detection across 320 live camera streams at 38 ms latency. B.S. Computer Science student, GPA 3.6 / 4.0.',
 }
