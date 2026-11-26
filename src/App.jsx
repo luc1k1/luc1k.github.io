@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Background from './components/Background.jsx'
 import Pet from './components/Pet.jsx'
+import Glass from './components/Glass.jsx'
+import HandDemo from './components/HandDemo.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
 import { projects } from './projects.js'
 
@@ -12,9 +14,9 @@ function Arrow() {
   )
 }
 
-function Ext({ href, children }) {
+function Ext({ href, children, className = 'ext' }) {
   return (
-    <a className="ext" href={href} target="_blank" rel="noreferrer">
+    <a className={className} href={href} target="_blank" rel="noreferrer">
       {children}
       <Arrow />
     </a>
@@ -129,12 +131,15 @@ function Project({ p }) {
 
 export default function App() {
   const year = new Date().getFullYear()
+  const [demo, setDemo] = useState(false)
   return (
     <>
       <Background />
       <Pet />
+      <Glass />
+      {demo && <HandDemo onClose={() => setDemo(false)} />}
       <div className="page">
-        <nav className="nav">
+        <nav className="nav glass">
           <a href="#top" className="brand">{profile.name}</a>
           <div className="nav-links">
             <a href="#research">Research</a>
@@ -150,9 +155,9 @@ export default function App() {
             <p className="bio">{profile.summary}</p>
             <p className="actions">
               <a className="btn" href={profile.cv} download>Download résumé</a>
-              <a className="ext" href={`mailto:${profile.email}`}>Email</a>
-              <Ext href={profile.linkedin}>LinkedIn</Ext>
-              <Ext href={profile.github}>GitHub</Ext>
+              <a className="pill glass" href={`mailto:${profile.email}`}>Email</a>
+              <Ext className="pill glass" href={profile.linkedin}>LinkedIn</Ext>
+              <Ext className="pill glass" href={profile.github}>GitHub</Ext>
             </p>
           </header>
 
@@ -160,6 +165,21 @@ export default function App() {
             {projects.map((p) => (
               <Project key={p.title} p={p} />
             ))}
+          </Section>
+
+          <Section id="demo" title="Live demo">
+            <Entry when="Try it">
+              <h3>Real-time hand tracking</h3>
+              <p className="sub">MediaPipe Hands · finger-bend detection · runs in your browser</p>
+              <p className="text">
+                Tracks up to two hands, detects which fingers are bent from joint angles and lets you draw with your
+                index finger. A web port of my Python / OpenCV project.
+              </p>
+              <p className="actions">
+                <button className="btn" onClick={() => setDemo(true)}>Launch demo</button>
+                <Ext className="pill glass" href={`${profile.github}/hand-tracking`}>Source</Ext>
+              </p>
+            </Entry>
           </Section>
 
           <Section id="experience" title="Experience">
