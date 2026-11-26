@@ -83,17 +83,19 @@ h1, h2, h3 { font-weight: 500; }
 .sub { color: var(--fg-2); font-size: 14px; margin-top: 2px; }
 .text { color: var(--fg-2); margin-top: 4px; text-wrap: pretty; }
 .what > .text:first-child { margin-top: 0; }
+.authors b { color: var(--fg); font-weight: 500; }
+.venue { font-size: 13px; color: var(--fg-3); margin-top: 2px; }
 .stack { margin-top: 12px; font-size: 13px; color: var(--fg-3); }
 
 /* Key numbers — tabular, separated by hairlines */
 .metrics {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
   margin-top: 14px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
-.metrics div { padding: 12px 0 12px 14px; border-left: 1px solid var(--line); }
+.metrics div { min-width: 0; padding: 12px 0 12px 14px; border-left: 1px solid var(--line); }
 .metrics div:first-child { padding-left: 0; border-left: none; }
 .metrics dt { font-size: 18px; font-weight: 500; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.metrics dd { font-size: 12.5px; color: var(--fg-3); }
+.metrics dd { font-size: 12px; color: var(--fg-3); white-space: nowrap; }
 
 /* Expandable details */
 .details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); }
@@ -131,4 +133,69 @@ a:focus-visible, button:focus-visible { outline: 1px solid var(--fg); outline-of
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
+}
+
+/* ===== Tensor, the corner pet ===== */
+.pet { position: fixed; right: 20px; bottom: 20px; z-index: 20; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.pet-btn { position: relative; display: block; padding: 0; line-height: 0; border-radius: 16px; }
+.pet-btn svg { overflow: visible; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6)); transition: transform 0.25s var(--ease); }
+.pet-btn:hover svg { transform: translateY(-3px) rotate(-3deg); }
+.pet.is-hungry .pet-btn svg { animation: pet-bob 2.6s ease-in-out infinite; }
+@keyframes pet-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+.pet-shell { fill: #ededed; }
+.pet-eye { fill: #0a0a0a; transition: ry 0.12s; }
+.pet-eye-line { fill: none; stroke: #0a0a0a; stroke-width: 2; stroke-linecap: round; }
+.pet-line { stroke: #6b6b6b; stroke-width: 1.6; stroke-linecap: round; }
+.pet-node { fill: #3a3a3a; transition: fill 0.3s; }
+.pet-node.on { fill: #4ade80; filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.8)); }
+.pet-body { transform-box: fill-box; transform-origin: 50% 100%; }
+.pet-body.squish { animation: pet-chomp 0.22s ease-in-out 0.55s 3; }
+@keyframes pet-chomp { 50% { transform: scale(1.06, 0.92); } }
+.pet-pellet { fill: #4ade80; animation: pet-drop 0.55s cubic-bezier(0.5, 0, 0.9, 0.5) forwards; }
+@keyframes pet-drop { from { transform: translateY(-14px); opacity: 0; } 20% { opacity: 1; } to { transform: translateY(38px); opacity: 1; } }
+
+.pet-hint {
+  position: absolute; right: 70px; top: 50%; transform: translateY(-50%); white-space: nowrap;
+  font-size: 12px; line-height: 1; color: var(--fg-2); padding: 6px 9px; border-radius: 8px;
+  background: #151515; border: 1px solid var(--line-2); pointer-events: none;
+  animation: pet-hint 0.4s var(--ease) both;
+}
+@keyframes pet-hint { from { opacity: 0; transform: translate(6px, -50%); } }
+
+.pet-card {
+  width: 236px; padding: 14px; border-radius: 12px; line-height: 1.5;
+  background: rgba(17, 17, 17, 0.92); border: 1px solid var(--line-2);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.8);
+  animation: pet-card 0.25s var(--ease) both;
+}
+@keyframes pet-card { from { opacity: 0; transform: translateY(6px) scale(0.98); } }
+.pet-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.pet-card-head b { font-weight: 500; }
+.pet-mood { font-size: 12px; color: var(--fg-3); }
+.pet-mood.warn { color: #fbbf24; }
+.pet-card p { margin-top: 4px; font-size: 13px; color: var(--fg-2); }
+.pet-stats { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.pet-stats div { padding: 8px 0; }
+.pet-stats div + div { padding-left: 12px; border-left: 1px solid var(--line); }
+.pet-stats dt { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pet-stats dd { font-size: 12px; color: var(--fg-3); }
+.pet-feed {
+  width: 100%; height: 34px; margin-top: 12px; border-radius: 8px;
+  background: var(--fg); color: var(--bg); font-size: 13.5px; font-weight: 500; transition: background 0.15s, opacity 0.15s;
+}
+.pet-feed:hover { background: #fff; }
+.pet-feed:disabled { opacity: 0.55; cursor: progress; }
+.pet-pop {
+  position: absolute; right: 8px; bottom: 64px; font-size: 12px; color: #4ade80; pointer-events: none;
+  animation: pet-pop 1.2s var(--ease) forwards;
+}
+@keyframes pet-pop { from { opacity: 0; transform: translateY(6px); } 20% { opacity: 1; } to { opacity: 0; transform: translateY(-26px); } }
+
+@media (max-width: 600px) {
+  .pet { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); }
+  .pet-btn svg { width: 52px; height: 52px; }
+  .pet-hint { right: 58px; }
+  .footer { padding-bottom: 88px; }
 }

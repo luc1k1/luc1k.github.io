@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Background from './components/Background.jsx'
+import Pet from './components/Pet.jsx'
 import { education, experience, languages, profile, skills } from './data.js'
 import { projects } from './projects.js'
 
@@ -29,6 +30,12 @@ function Section({ id, title, compact, children }) {
   )
 }
 
+// Author list with my own name highlighted, as in an academic CV
+function Authors({ list }) {
+  const me = `${profile.name[0]}. ${profile.name.split(' ').pop()}`
+  return list.split(me).flatMap((part, i) => (i ? [<b key={i}>{me}</b>, part] : [part]))
+}
+
 // Date / label column on the left, content on the right
 function Entry({ when, children }) {
   return (
@@ -45,7 +52,8 @@ function Project({ p }) {
   return (
     <Entry when={p.year}>
       <h3>{p.title}</h3>
-      {p.badge && <p className="sub">{p.badge}</p>}
+      {p.authors && <p className="sub authors"><Authors list={p.authors} /></p>}
+      {p.badge && <p className="venue">{p.badge}</p>}
       <p className="text">{p.summary}</p>
 
       {p.metrics && (
@@ -62,7 +70,6 @@ function Project({ p }) {
       <div className={`details${open ? ' open' : ''}`} id={id}>
         <div className="details-inner">
           <p className="text">{p.description}</p>
-          {p.authors && <p className="sub">{p.authors}</p>}
           {p.tags && <p className="stack">{p.tags.join(' / ')}</p>}
           {(p.link || p.github) && (
             <p className="links">
@@ -85,6 +92,7 @@ export default function App() {
   return (
     <>
       <Background />
+      <Pet />
       <div className="page">
         <nav className="nav">
           <a href="#top" className="brand">{profile.name}</a>
@@ -151,7 +159,7 @@ export default function App() {
             <Ext href={profile.linkedin}>LinkedIn</Ext>
             <Ext href={profile.github}>GitHub</Ext>
           </p>
-          <span>© {year} {profile.name}</span>
+          <span>© {year} {profile.name} · Updated {__BUILD_DATE__}</span>
         </footer>
       </div>
     </>

@@ -5,6 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: './',
+  // shown in the footer as “Updated Nov 2026”
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })),
+  },
   build: {
     target: 'es2020',
     cssMinify: true,
